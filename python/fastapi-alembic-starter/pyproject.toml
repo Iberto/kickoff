@@ -1,0 +1,75 @@
+[project]
+name = "fastapi-alembic-starter"
+version = "0.1.0"
+description = "Boilerplate"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.135.1",
+    "pydantic-settings>=2.13.1",
+    "pydantic[email]",
+    "sqlalchemy[asyncio]>=2.0.48",
+    "uvicorn[standard]>=0.42.0",
+    "slowapi>=0.1.9",
+    "structlog>=24.4.0",
+    "psycopg[binary]>=3.2.0",
+    "bcrypt>=5.0.0",
+    "pyjwt>=2.10.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.15.6",
+    "mypy>=1.19.1"
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[[tool.mypy.overrides]]
+# missing stubs
+# module = "yfinance" -> use this style if cant download stubs
+ignore_missing_imports = true
+
+[tool.ruff]
+# Same as Black.
+line-length = 88
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"] # Errors, imports, upgrades, # D for docstring
+ignore = ["D100"]
+
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+
+[project.scripts]
+db_generate = "src.cli:database.Db.generate"
+db_migrate = "src.cli:database.Db.migrate"
+db_revert = "src.cli:database.Db.revert"
+run_dev = "src.cli:run.Run.dev"
